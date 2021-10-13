@@ -194,8 +194,8 @@ abstract class Node<C : NodeConfiguration>(block : C.() -> Unit = {}) : Configur
      *
      * @param input     The input being attached to the node.
      */
-    internal fun registerInput(input : Input<*>) {
-        inputs[input.name] = input
+    internal fun registerInput(input : Input<*>, name: String) {
+        inputs[name] = input
     }
 
     /** All outputs attached to this node. */
@@ -206,8 +206,8 @@ abstract class Node<C : NodeConfiguration>(block : C.() -> Unit = {}) : Configur
      *
      * @param output    The output being attached to the node.
      */
-    internal fun registerOutput(output : Output<*>) {
-        outputs[output.name] = output
+    internal fun registerOutput(output : Output<*>, name: String) {
+        outputs[name] = output
     }
 
     /** All execution state registered with the node. */

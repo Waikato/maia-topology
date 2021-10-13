@@ -1,5 +1,8 @@
 package māia.topology.io
 
+import māia.topology.Node
+import kotlin.reflect.KProperty
+
 /**
  * An array of inputs to a node.
  *
@@ -26,11 +29,15 @@ class Inputs<T> private constructor(
     override val isSubscribed: Boolean
         get() = inputs.any { it.isSubscribed }
 
-    override fun onDelegation() {
+    override fun onDelegation(
+        owner : Node<*>,
+        property : KProperty<*>,
+        name : String
+    ) {
         for (index in 0 until size) {
             val input = inputs[index]
             input.provideDelegate(owner, property)
-            owner.registerInput(input)
+            owner.registerInput(input, input.name)
         }
     }
 

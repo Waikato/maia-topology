@@ -5,6 +5,7 @@ import māia.util.Absent
 import māia.util.Optional
 import māia.util.Present
 import māia.util.property.SingleUseReadWriteProperty
+import kotlin.reflect.KProperty
 
 /**
  * Instances of this class act as delegates for node-state which should be
@@ -32,7 +33,11 @@ class ExecutionState<T>(
         state = Present(value)
     }
 
-    override fun onDelegation() {
+    override fun onDelegation(
+        owner : Node<*>,
+        property : KProperty<*>,
+        name : String
+    ) {
         // Register the state with the node
         owner.registerExecutionState(this)
     }

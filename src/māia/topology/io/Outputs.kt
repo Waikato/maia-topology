@@ -1,6 +1,7 @@
 package māia.topology.io
 
-import māia.util.property.CachedReadOnlyProperty
+import māia.topology.Node
+import kotlin.reflect.KProperty
 
 /**
  * An array of outputs from a node.
@@ -34,11 +35,15 @@ class Outputs<T> private constructor(
     override val isSubscribed: Boolean
         get() = outputs.any { it.isSubscribed }
 
-    override fun onDelegation() {
+    override fun onDelegation(
+        owner : Node<*>,
+        property : KProperty<*>,
+        name : String
+    ) {
         for (index in 0 until size) {
             val output = outputs[index]
             output.provideDelegate(owner, property)
-            owner.registerOutput(output)
+            owner.registerOutput(output, output.name)
         }
     }
 

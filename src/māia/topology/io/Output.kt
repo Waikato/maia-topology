@@ -3,9 +3,11 @@ package māia.topology.io
 import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.ClosedSendChannelException
 import kotlinx.coroutines.coroutineScope
+import māia.topology.Node
 import māia.topology.Subscription
 import māia.topology.io.error.FullyConnectedError
 import māia.util.debugln
+import kotlin.reflect.KProperty
 
 /**
  * An output connector on a node.
@@ -72,8 +74,12 @@ open class Output<T>(maxConnections : Int = -1) : Throughput<Output<T>, T>() {
         subscriptions.forEach { it.close() }
     }
 
-    override fun onDelegation() {
-        owner.registerOutput(this)
+    override fun onDelegation(
+        owner : Node<*>,
+        property : KProperty<*>,
+        name : String
+    ) {
+        owner.registerOutput(this, name)
     }
 
     override fun getValue() : Output<T> {

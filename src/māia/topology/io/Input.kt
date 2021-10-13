@@ -1,10 +1,12 @@
 package māia.topology.io
 
 import kotlinx.coroutines.channels.ClosedReceiveChannelException
+import māia.topology.Node
 import māia.topology.Subscription
 import māia.topology.io.error.InputAlreadySubscribedException
 import māia.topology.io.error.InputClosedDuringPullException
 import māia.util.debugln
+import kotlin.reflect.KProperty
 
 /**
  * TODO: What class does.
@@ -69,8 +71,12 @@ open class Input<T> : Throughput<Input<T>, T>() {
         }
     }
 
-    override fun onDelegation() {
-        owner.registerInput(this)
+    override fun onDelegation(
+        owner: Node<*>,
+        property: KProperty<*>,
+        name: String
+    ) {
+        owner.registerInput(this, name)
     }
 
     override fun getValue() : Input<T> {
